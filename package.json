@@ -1,0 +1,193 @@
+{
+  "name": "woocodes",
+  "version": "1.2.0",
+  "description": "WordPress plugin for managing and delivering digital product codes automatically through WooCommerce",
+  "main": "assets/js/admin.js",
+  "private": true,
+  "scripts": {
+    "build": "npm run build:css && npm run build:js",
+    "build:css": "npm run sass:build && npm run css:minify",
+    "build:js": "npm run js:concat && npm run js:minify",
+    "sass:build": "sass assets/scss/admin.scss:assets/css/admin.css assets/scss/frontend.scss:assets/css/frontend.css --style=expanded --source-map",
+    "sass:watch": "sass --watch assets/scss:assets/css --style=expanded --source-map",
+    "css:minify": "cleancss -o assets/css/admin.min.css assets/css/admin.css && cleancss -o assets/css/frontend.min.css assets/css/frontend.css",
+    "js:concat": "concat-cli -f assets/js/admin.js -o assets/js/admin.concat.js && concat-cli -f assets/js/frontend.js -o assets/js/frontend.concat.js",
+    "js:minify": "terser assets/js/admin.js -o assets/js/admin.min.js --source-map && terser assets/js/frontend.js -o assets/js/frontend.min.js --source-map",
+    "js:lint": "eslint assets/js/*.js --fix",
+    "css:lint": "stylelint assets/css/*.css --fix",
+    "watch": "npm-run-all --parallel sass:watch js:watch",
+    "js:watch": "nodemon --watch assets/js --ext js --exec \"npm run js:lint && npm run js:minify\"",
+    "dev": "npm run sass:watch & npm run js:watch",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "clean": "rimraf assets/css/*.min.css assets/js/*.min.js assets/css/*.map assets/js/*.map",
+    "lint": "npm run js:lint && npm run css:lint",
+    "format": "prettier --write \"assets/**/*.{js,css,scss}\"",
+    "validate": "npm run lint && npm run test",
+    "pre-commit": "lint-staged",
+    "prepare": "husky install",
+    "release": "npm run clean && npm run build && npm run validate",
+    "docs:serve": "docsify serve docs",
+    "docs:build": "docsify-cli generate docs"
+  },
+  "keywords": [
+    "wordpress",
+    "woocommerce",
+    "digital-products",
+    "codes",
+    "license-keys",
+    "activation-codes",
+    "email-delivery",
+    "ecommerce"
+  ],
+  "author": {
+    "name": "Mohammed Chalh",
+    "email": "contact@woocodes.com",
+    "url": "https://woocodes.com"
+  },
+  "license": "GPL-2.0-or-later",
+  "homepage": "https://woocodes.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/woocodes/woocodes.git"
+  },
+  "bugs": {
+    "url": "https://github.com/woocodes/woocodes/issues"
+  },
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.22.0",
+    "@babel/preset-env": "^7.22.0",
+    "@eslint/js": "^9.0.0",
+    "autoprefixer": "^10.4.14",
+    "babel-jest": "^29.5.0",
+    "clean-css-cli": "^5.6.0",
+    "concat-cli": "^4.0.0",
+    "docsify-cli": "^4.4.4",
+    "eslint": "^8.42.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "husky": "^8.0.3",
+    "jest": "^29.5.0",
+    "jest-environment-jsdom": "^29.5.0",
+    "lint-staged": "^13.2.2",
+    "nodemon": "^2.0.22",
+    "npm-run-all": "^4.1.5",
+    "postcss": "^8.4.24",
+    "postcss-cli": "^10.1.0",
+    "prettier": "^2.8.8",
+    "rimraf": "^5.0.1",
+    "sass": "^1.62.1",
+    "stylelint": "^15.6.2",
+    "stylelint-config-prettier": "^9.0.5",
+    "stylelint-config-standard": "^33.0.0",
+    "terser": "^5.17.7",
+    "webpack": "^5.84.1",
+    "webpack-cli": "^5.1.1"
+  },
+  "dependencies": {
+    "qrcode": "^1.5.3"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie <= 11"
+  ],
+  "jest": {
+    "testEnvironment": "jsdom",
+    "collectCoverageFrom": [
+      "assets/js/**/*.js",
+      "!assets/js/**/*.min.js"
+    ],
+    "coverageDirectory": "coverage",
+    "coverageReporters": [
+      "html",
+      "text",
+      "lcov"
+    ]
+  },
+  "eslintConfig": {
+    "env": {
+      "browser": true,
+      "es2021": true,
+      "jquery": true,
+      "jest": true
+    },
+    "extends": [
+      "eslint:recommended",
+      "prettier"
+    ],
+    "plugins": [
+      "prettier"
+    ],
+    "parserOptions": {
+      "ecmaVersion": 2021,
+      "sourceType": "module"
+    },
+    "globals": {
+      "woocodes_admin": "readonly",
+      "woocodes_frontend": "readonly",
+      "wp": "readonly",
+      "woocommerce": "readonly",
+      "ajaxurl": "readonly"
+    },
+    "rules": {
+      "prettier/prettier": "error",
+      "no-unused-vars": [
+        "error",
+        {
+          "argsIgnorePattern": "^_"
+        }
+      ],
+      "no-console": "warn",
+      "no-debugger": "error"
+    }
+  },
+  "stylelint": {
+    "extends": [
+      "stylelint-config-standard",
+      "stylelint-config-prettier"
+    ],
+    "rules": {
+      "declaration-no-important": null,
+      "selector-class-pattern": null,
+      "color-function-notation": "legacy",
+      "alpha-value-notation": "number"
+    }
+  },
+  "prettier": {
+    "semi": true,
+    "trailingComma": "es5",
+    "singleQuote": true,
+    "printWidth": 80,
+    "tabWidth": 2,
+    "useTabs": false
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "prettier --write",
+      "git add"
+    ],
+    "*.{css,scss}": [
+      "stylelint --fix",
+      "prettier --write",
+      "git add"
+    ],
+    "*.php": [
+      "php -l",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "npm run validate"
+    }
+  }
+}

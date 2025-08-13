@@ -1,0 +1,114 @@
+{
+    "name": "woocodes/woocodes",
+    "description": "WordPress plugin for managing and delivering digital product codes automatically through WooCommerce",
+    "type": "wordpress-plugin",
+    "version": "1.2.0",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Mohammed Chalh",
+            "email": "contact@woocodes.com",
+            "homepage": "https://woocodes.com",
+            "role": "Developer"
+        }
+    ],
+    "keywords": [
+        "wordpress",
+        "woocommerce",
+        "digital-products",
+        "codes",
+        "license-keys",
+        "activation-codes",
+        "email-delivery",
+        "ecommerce"
+    ],
+    "homepage": "https://woocodes.com",
+    "support": {
+        "issues": "https://github.com/woocodes/woocodes/issues",
+        "docs": "https://docs.woocodes.com",
+        "source": "https://github.com/woocodes/woocodes"
+    },
+    "require": {
+        "php": ">=7.4",
+        "composer/installers": "^1.0 || ^2.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.0",
+        "wp-coding-standards/wpcs": "^3.0",
+        "phpcompatibility/phpcompatibility-wp": "^2.1",
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.7 || ^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "WooCodes\\": "includes/"
+        },
+        "files": [
+            "includes/woocodes-core-functions.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "WooCodes\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "lint": "phpcs --standard=WordPress --extensions=php --ignore=vendor/ .",
+        "lint-fix": "phpcbf --standard=WordPress --extensions=php --ignore=vendor/ .",
+        "test": "phpunit",
+        "test-coverage": "phpunit --coverage-html coverage/",
+        "compatibility": "phpcs --standard=PHPCompatibilityWP --extensions=php --ignore=vendor/ --runtime-set testVersion 7.4- .",
+        "check": [
+            "@lint",
+            "@compatibility",
+            "@test"
+        ],
+        "build": [
+            "@check",
+            "composer install --no-dev --optimize-autoloader"
+        ],
+        "dev-setup": [
+            "composer install",
+            "npm install"
+        ]
+    },
+    "extra": {
+        "installer-name": "woocodes",
+        "installer-paths": {
+            "wp-content/plugins/{$name}/": ["type:wordpress-plugin"]
+        },
+        "wordpress-install-dir": "wp"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "composer/installers": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        },
+        "optimize-autoloader": true,
+        "classmap-authoritative": true,
+        "apcu-autoloader": true
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "archive": {
+        "exclude": [
+            "/.github",
+            "/tests",
+            "/coverage",
+            "/.gitignore",
+            "/.gitattributes",
+            "/phpunit.xml",
+            "/phpcs.xml",
+            "/README.md",
+            "/CHANGELOG.md",
+            "/package.json",
+            "/package-lock.json",
+            "/webpack.config.js",
+            "/node_modules",
+            "/src",
+            "/.editorconfig",
+            "/.eslintrc.js",
+            "/composer.lock"
+        ]
+    }
+}
